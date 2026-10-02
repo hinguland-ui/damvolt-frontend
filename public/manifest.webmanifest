@@ -1,0 +1,12 @@
+{
+  "name": "Damvolt Engineering Services Private Limited",
+  "short_name": "Damvolt",
+  "description": "Complete electrical & automation solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/fav.png", "sizes": "1254x1254", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -1,0 +1,59 @@
+# Damvolt website — Apache / cPanel / Hostinger configuration
+# Upload the whole contents of `dist/` (including this hidden file) to public_html.
+
+Options -MultiViews
+DirectoryIndex index.html
+
+# --- SPA routing: send every unknown path to index.html so refresh never 404s ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Fallback if mod_rewrite is disabled on the server
+ErrorDocument 404 /index.html
+
+# --- Caching: hashed assets forever, HTML never (so new uploads show instantly) ---
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2?)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  <FilesMatch "\.(html|webmanifest)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# --- Compression ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/manifest+json
+</IfModule>
+
+AddType application/manifest+json .webmanifest
+AddType image/webp .webp
+
+# --- Security ---------------------------------------------------------------
+Options -Indexes
+ServerSignature Off
+
+# Hidden files / folders (.env, .git …) are never served; source maps are not published
+<IfModule mod_rewrite.c>
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+</IfModule>
+<FilesMatch "\.(map|env|log|sql|bak|ini|lock|ya?ml|sh|swp|orig)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always unset X-Powered-By
+</IfModule>
