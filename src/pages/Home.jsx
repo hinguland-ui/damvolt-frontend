@@ -42,7 +42,7 @@ export default function Home() {
         <Deco type="rings" style={{ width: 520, right: -160, top: 40 }} />
         <div className="container split">
           <div className="img-stack reveal">
-            <Img className="split-img tall" src={about.image} alt={about.title} />
+            <Img className="split-img tall" src={about.image} alt={about.title} fallback="/images/engineer-lab.webp" />
             {about.badgeValue && (
               <div className="img-badge">
                 <b>{about.badgeValue}</b>

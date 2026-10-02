@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import SmartLink from './SmartLink'
 import useEmblaStable from './useEmblaStable'
 import { home } from '../data/site'
+import { HERO_FALLBACKS, swapToFallback } from '../lib/media'
 
 const DELAY = 6000
 const pad = (n) => String(n).padStart(2, '0')
@@ -54,7 +55,13 @@ export default function HeroSlider() {
             const active = i === selected
             return (
               <div className={`hero-slide${active ? ' active' : ''}`} key={`${i}-${s.image}`} aria-hidden={!active}>
-                <img src={s.image} alt="" draggable="false" fetchPriority={i === 0 ? 'high' : 'low'} />
+                <img
+                  src={s.image || HERO_FALLBACKS[i % HERO_FALLBACKS.length]}
+                  alt=""
+                  draggable="false"
+                  fetchPriority={i === 0 ? 'high' : 'low'}
+                  onError={(e) => swapToFallback(e, HERO_FALLBACKS[i % HERO_FALLBACKS.length])}
+                />
                 <div className="container slide-content">
                   {s.kicker && (
                     <m.div className="kicker" variants={item} custom={0} initial="hidden" animate={active ? 'show' : 'hidden'}>

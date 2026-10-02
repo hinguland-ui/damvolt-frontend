@@ -31,7 +31,7 @@ export default function Industries() {
           <div className="ind-grid">
             {industries.map((i) => (
               <div className="ind-card reveal" key={i.title}>
-                <Img src={i.image} alt={i.title} />
+                <Img src={i.image} alt={i.title} fallback="/images/ind-manufacturing.webp" />
                 <h3>
                   <Icon name={i.icon} size={18} /> {i.title}
                 </h3>

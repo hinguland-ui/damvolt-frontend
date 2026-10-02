@@ -81,8 +81,15 @@ export function setMeta(attr, key, content) {
 
 // Favicon, share image and first-slide preload come from the admin panel too.
 function applyHead() {
-  setLink('icon', company.favicon)
-  setLink('apple-touch-icon', company.favicon)
+  // Favicon: use the uploaded one only if it really loads, otherwise keep the one that ships with the site.
+  if (company.favicon) {
+    const probe = new Image()
+    probe.onload = () => {
+      setLink('icon', company.favicon)
+      setLink('apple-touch-icon', company.favicon)
+    }
+    probe.src = company.favicon
+  }
   setMeta('property', 'og:image', home.seo.ogImage || home.slides[0]?.image)
   setMeta('name', 'apple-mobile-web-app-title', company.shortName)
   document.head.querySelectorAll('link[rel="preload"][as="image"]').forEach((l) => l.remove()) // old static preload from index.html
