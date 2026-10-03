@@ -18,7 +18,7 @@ export function usePageMeta(title, description, key, image, exactTitle) {
     const fullTitle = exactTitle || custom.title || (isHome ? seo.title || company.name : `${title} | ${company.name}`)
     const desc = custom.description || description || (isHome ? seo.description : '') || company.description
     const url = location.origin + (location.pathname.replace(/\/+$/, '') || '/')
-    const picture = image || (isHome ? seo.ogImage : '') || seo.ogImage || home.slides?.[0]?.image
+    const picture = image || (isHome ? seo.ogImage : '') || seo.ogImage || `${location.origin}/og-image.png`
 
     document.title = fullTitle
     setMeta('name', 'description', desc)
@@ -93,7 +93,7 @@ export function ServiceCard({ s, reveal = true }) {
 
 export function CTABanner({ title = home.cta.title, text = home.cta.text, spaced = false }) {
   return (
-    <section className={`section${spaced ? '' : ' tight'}`}>
+    <section className={`section defer${spaced ? '' : ' tight'}`}>
       <div className="container">
         <div className="cta reveal">
           <Deco type="circuit" className="on-dark" style={{ width: 560, right: -120, top: -80 }} />
@@ -170,7 +170,7 @@ export function Faq({ items }) {
 
 export function LocationSection({ alt = false }) {
   return (
-    <section className={`section${alt ? ' alt' : ''}`}>
+    <section className={`section defer${alt ? ' alt' : ''}`}>
       <div className="container">
         <SectionHead eyebrow="Visit us" title="Our offices" text="Meet our team in Noida or reach our registered office in New Delhi." />
         <div className="location">

@@ -1,13 +1,13 @@
-import { Suspense, useCallback, useEffect, useState } from 'react'
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { LazyMotion, domAnimation, m } from 'motion/react'
-import { Toaster } from 'sonner'
 import Header from './Header'
 import Footer from './Footer'
 import MobileDrawer from './MobileDrawer'
 import WhatsAppWidget from './WhatsAppWidget'
 import { PageSkeleton } from './ui'
 import ErrorBoundary from './ErrorBoundary'
+import { trackPageView } from '../lib/pixel'
 
 // Reveal-on-scroll for every .reveal element, including ones added later by lazy pages.
 // DOM scans are batched into one per animation frame to stay cheap.
@@ -50,6 +50,15 @@ export default function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const closeMenu = useCallback(() => setMenuOpen(false), [])
   useReveal()
+  // The first page paints at once (so the hero picture is not held back by a fade-in); later page changes still fade in.
+  const firstPage = useRef(true)
+  useEffect(() => {
+    firstPage.current = false
+  }, [])
+
+  useEffect(() => {
+    trackPageView() // Meta Pixel (only when an ID is set in the admin panel)
+  }, [pathname])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -62,7 +71,7 @@ export default function Layout() {
       <Header onMenu={() => setMenuOpen(true)} />
       <m.main
         key={`page:${pathname}`}
-        initial={{ opacity: 0, y: 16 }}
+        initial={firstPage.current ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -77,7 +86,6 @@ export default function Layout() {
       <WhatsAppWidget />
 
       <MobileDrawer open={menuOpen} onClose={closeMenu} />
-      <Toaster position="top-center" richColors closeButton toastOptions={{ style: { fontFamily: 'var(--font)' } }} />
     </LazyMotion>
   )
 }

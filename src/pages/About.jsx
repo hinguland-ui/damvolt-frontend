@@ -143,9 +143,6 @@ export default function About() {
               testing engineers and site supervisors. Regular training keeps them current with the latest equipment and
               safety practices.
             </p>
-            <Link to="/careers" className="btn btn-secondary">
-              Join our team <ArrowRight size={17} />
-            </Link>
           </div>
         </div>
       </section>

@@ -24,7 +24,7 @@ function ReviewCard({ r, i }) {
         <span className="review-quote">
           <QuoteMark />
         </span>
-        <span className="stars" aria-label={`${r.rating} out of 5`}>
+        <span className="stars" role="img" aria-label={`${r.rating} out of 5`}>
           {Array.from({ length: 5 }).map((_, k) => (
             <Star key={k} size={14} strokeWidth={0} fill={k < r.rating ? 'currentColor' : '#dcdce2'} />
           ))}

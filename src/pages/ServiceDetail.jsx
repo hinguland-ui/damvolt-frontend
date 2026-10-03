@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, ChevronRight, Mail, Phone } from 'lucide-react'
 import Carousel from '../components/Carousel'
 import Img from '../components/Img'
@@ -9,6 +9,7 @@ import { getService, services } from '../data/services'
 
 export default function ServiceDetail() {
   const { slug } = useParams()
+  const navigate = useNavigate()
   const s = getService(slug)
   usePageMeta(s?.title, s?.metaDescription || s?.short, undefined, s?.image, s?.metaTitle)
   if (!s) return <Navigate to="/services" replace />
@@ -25,7 +26,18 @@ export default function ServiceDetail() {
             <Img className="detail-img reveal" src={s.image} alt={s.title} />
             {s.category && <span className="eyebrow">{s.category} services</span>}
             <h2>Overview</h2>
-            <p className="lead">{s.intro}</p>
+            <div
+              className="rich"
+              // intro is sanitised HTML from the admin editor; older plain-text entries are wrapped in a paragraph
+              dangerouslySetInnerHTML={{ __html: /<[a-z][\s\S]*>/i.test(s.intro || '') ? s.intro : `<p>${s.intro || ''}</p>` }}
+              onClick={(e) => {
+                const href = e.target.closest('a')?.getAttribute('href')
+                if (href?.startsWith('/') && !href.startsWith('//')) {
+                  e.preventDefault()
+                  navigate(href)
+                }
+              }}
+            />
 
             <h3>What we offer</h3>
             <ul className="offer-list">

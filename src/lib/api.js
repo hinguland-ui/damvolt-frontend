@@ -22,11 +22,18 @@ const readCache = () => {
 // How long a returning visitor waits for fresh content before the cached copy is shown instead.
 const FRESH_WAIT_MS = 1500
 
-const fetchContent = () =>
-  fetch(`${API_URL}/content`, { headers: { Accept: 'application/json' }, cache: 'no-cache' }).then((r) => {
+const fetchContent = () => {
+  // index.html already started the first request; use it once, later calls (retry) fetch again.
+  if (window.__content) {
+    const early = window.__content
+    window.__content = null
+    return early
+  }
+  return fetch(`${API_URL}/content`, { headers: { Accept: 'application/json' }, cache: 'no-cache' }).then((r) => {
     if (!r.ok) throw new Error(`API ${r.status}`)
     return r.json()
   })
+}
 
 /**
  * Loads all website content in ONE request (the API caches it server-side and sends an ETag).

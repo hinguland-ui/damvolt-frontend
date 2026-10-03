@@ -45,7 +45,7 @@ export default function WhatsAppWidget() {
       <div className={`wa-chat${open ? ' open' : ''}`} ref={box} role="dialog" aria-label="Chat on WhatsApp" aria-hidden={!open}>
         <div className="wa-chat-head">
           <span className="wa-chat-avatar">
-            <img src="/fav.png" alt="" />
+            <img src="/fav-96.png" alt="" width="48" height="48" />
           </span>
           <div>
             <strong>{company.shortName} Engineering</strong>

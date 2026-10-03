@@ -11,7 +11,6 @@ const links = [
   { to: '/about', label: 'About' },
   { to: '/services', label: 'Services', mega: true },
   { to: '/industries', label: 'Industries' },
-  { to: '/careers', label: 'Careers' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -111,7 +110,7 @@ export default function Header({ onMenu }) {
                           ))}
                         </div>
                         <Link to="/contact" className="mega-promo" tabIndex={megaOpen ? 0 : -1}>
-                          <img src="/images/switchgear.webp" alt="" loading="eager" decoding="async" />
+                          <img src="/images/switchgear.webp" alt="" loading="lazy" decoding="async" />
                           <span className="mega-promo-body">
                             <strong>Planning a project?</strong>
                             <span>Free site visit &amp; quotation</span>

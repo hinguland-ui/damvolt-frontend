@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { toast } from 'sonner'
+import { Toaster, toast } from 'sonner'
 import { AlertCircle, Building2, CheckCircle2, Clock, Mail, MapPin, MessageSquareText, Phone, Send, User, Wrench } from 'lucide-react'
 import MapEmbed from '../components/MapEmbed'
 import Recaptcha from '../components/Recaptcha'
@@ -164,6 +164,7 @@ export default function Contact() {
 
   return (
     <>
+      <Toaster position="top-center" richColors closeButton toastOptions={{ style: { fontFamily: 'var(--font)' } }} />
       <PageHero
         title="Contact us"
         text="Have a project in mind or need urgent support? Our team is ready to help."

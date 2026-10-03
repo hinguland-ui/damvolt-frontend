@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import '@fontsource-variable/inter/wght.css'
 import './index.css'
 import App from './App.jsx'
 import { loadContent, onContentUpdate } from './lib/api'
@@ -41,33 +42,30 @@ const contentReady = loadContent().then(
   },
 )
 
-// Preloader (defined in index.html): once the page AND the content have loaded, finish the bar
-// smoothly from wherever it is, then fade the whole screen out.
+// Preloader (defined in index.html): hides as soon as the content, the stylesheet and the first banner picture are
+// ready (the picture is waited for at most 1.5 s), then fades away quickly.
 const preloader = document.getElementById('preloader')
 if (preloader) {
-  const MIN = 1200 // minimum time on screen (from when it first appeared) so it feels calm, not flashy
-  const shownAt = window.__plStart ?? 0
-  const bar = preloader.querySelector('.pl-bar span')
-  const hide = () => {
-    const wait = Math.max(0, MIN - (performance.now() - shownAt))
-    setTimeout(() => {
-      if (bar) {
-        // freeze the running animation at its current point, then glide to 100%
-        bar.style.transform = getComputedStyle(bar).transform
-        bar.style.animation = 'none'
-        void bar.offsetWidth
-        bar.style.transition = 'transform .5s cubic-bezier(.4,0,.2,1)'
-        bar.style.transform = 'scaleX(1)'
-      }
-      setTimeout(() => {
-        preloader.classList.add('done')
-        setTimeout(() => preloader.remove(), 900)
-      }, 550)
-    }, wait)
-  }
-  const pageLoaded = new Promise((resolve) => {
-    if (document.readyState === 'complete') resolve()
-    else window.addEventListener('load', resolve, { once: true })
+  const cssReady = new Promise((resolve) => {
+    const link = document.querySelector('link[rel="stylesheet"][media]')
+    if (!link || link.media === 'all') return resolve()
+    link.addEventListener('load', resolve, { once: true })
+    setTimeout(resolve, 3000)
   })
-  Promise.all([pageLoaded, contentReady]).then(hide)
+  const heroReady = () =>
+    new Promise((resolve) => {
+      const img = document.querySelector('.hero-slide img')
+      if (!img || (img.complete && img.naturalWidth)) return resolve()
+      img.addEventListener('load', resolve, { once: true })
+      img.addEventListener('error', resolve, { once: true })
+      setTimeout(resolve, 1500)
+    })
+  const hide = () => {
+    preloader.classList.add('done')
+    setTimeout(() => preloader.remove(), 400)
+  }
+  Promise.all([contentReady, cssReady])
+    .then(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))) // let React paint the page
+    .then(heroReady)
+    .then(hide)
 }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Damvolt Engineering Services Private Limited</title>
     <meta
       name="description"
@@ -13,51 +13,55 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Damvolt Engineering Services Private Limited" />
     <meta property="og:description" content="Complete electrical & automation solutions — efficient and safe." />
-    <meta property="og:image" content="/images/hero-powerlines.webp" />
+    <meta property="og:site_name" content="Damvolt Engineering Services Private Limited" />
+    <meta property="og:image" content="%SITE_URL%/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Damvolt logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%/og-image.png" />
     <link rel="icon" type="image/png" href="/fav.png" />
-    <link rel="apple-touch-icon" href="/fav.png" />
+    <link rel="apple-touch-icon" href="/fav-192.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Fonts load without blocking first paint, so the preloader appears instantly -->
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Cinzel:wght@600&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Cinzel:wght@600&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Cinzel:wght@600&display=swap" />
-    </noscript>
+    <link rel="preload" as="image" href="/loader.svg" fetchpriority="high" />
     <style>
       /* Preloader styles inline so it shows before the CSS bundle loads */
-      #preloader { position: fixed; inset: 0; z-index: 9999; background: #fff; display: grid; place-items: center; transition: opacity .8s cubic-bezier(.4,0,.2,1), visibility 0s linear .8s; }
+      #preloader { position: fixed; inset: 0; z-index: 9999; background: #fff; display: grid; place-items: center; transition: opacity .3s ease-out, visibility 0s linear .3s; }
       #preloader.done { opacity: 0; visibility: hidden; }
-      .pl-inner { display: flex; flex-direction: column; align-items: center; gap: 26px; animation: plIn .7s cubic-bezier(.22,1,.36,1) both; transition: transform .8s cubic-bezier(.4,0,.2,1), opacity .6s ease; }
-      #preloader.done .pl-inner { animation: none; transform: scale(1.06); opacity: 0; }
-      .pl-inner img { width: 68px; height: 68px; animation: plBreathe 2.6s ease-in-out infinite; }
-      .pl-bar { width: 160px; height: 3px; background: #e3edfb; border-radius: 3px; overflow: hidden; }
-      /* Fills smoothly towards 85% while loading, then completes to 100% once the page is ready */
-      .pl-bar span { display: block; width: 100%; height: 100%; background: linear-gradient(90deg, #2078fe, #4dc9ff); border-radius: 3px; transform-origin: left; transform: scaleX(0); animation: plFill 2.4s cubic-bezier(.25,.8,.3,1) forwards; }
-      @keyframes plIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-      @keyframes plBreathe { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.95); opacity: .82; } }
-      @keyframes plFill { from { transform: scaleX(0); } to { transform: scaleX(.85); } }
-      @media (prefers-reduced-motion: reduce) { .pl-inner, .pl-inner img, .pl-bar span { animation: none; } }
+      /* The animated logo (/loader.svg) is a fixed file — it does not change with the admin panel */
+      #preloader img { width: min(46vw, 220px); height: auto; aspect-ratio: 1; }
     </style>
   </head>
   <body>
     <div id="preloader" aria-hidden="true">
-      <div class="pl-inner">
-        <img src="/fav.png" alt="" />
-        <div class="pl-bar"><span></span></div>
-      </div>
+      <img src="/loader.svg" alt="" width="220" height="220" fetchpriority="high" />
     </div>
-    <script>window.__plStart = performance.now()</script>
+    <script>
+      window.__plStart = performance.now()
+      // Ask the server for the page content right now, in parallel with downloading the app code (saves ~1 s).
+      ;(function () {
+        var u = '%VITE_API_URL%'
+        if (u.charAt(0) === '%') u = '/api'
+        var p = fetch(u.replace(/\/$/, '') + '/content', { headers: { Accept: 'application/json' }, cache: 'no-cache' }).then(function (r) {
+          if (!r.ok) throw new Error('API ' + r.status)
+          return r.json()
+        })
+        p.catch(function () {})
+        window.__content = p
+        // Returning visitor: start downloading the banner picture seen last time before any code has run.
+        try {
+          var hero = localStorage.getItem('damvolt:hero')
+          if (hero) {
+            var l = document.createElement('link')
+            l.rel = 'preload'
+            l.as = 'image'
+            l.href = hero
+            l.setAttribute('fetchpriority', 'high')
+            document.head.appendChild(l)
+          }
+        } catch (e) {}
+      })()
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

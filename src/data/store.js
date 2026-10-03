@@ -83,17 +83,30 @@ export function setMeta(attr, key, content) {
 function applyHead() {
   // Favicon: use the uploaded one only if it really loads, otherwise keep the one that ships with the site.
   if (company.favicon) {
-    const probe = new Image()
-    probe.onload = () => {
-      setLink('icon', company.favicon)
-      setLink('apple-touch-icon', company.favicon)
+    // after the page has loaded, so the small icon never competes with the banner picture
+    const swap = () => {
+      const probe = new Image()
+      probe.onload = () => {
+        setLink('icon', company.favicon)
+        setLink('apple-touch-icon', company.favicon)
+      }
+      probe.src = company.favicon
     }
-    probe.src = company.favicon
+    if (document.readyState === 'complete') swap()
+    else addEventListener('load', swap, { once: true })
   }
-  setMeta('property', 'og:image', home.seo.ogImage || home.slides[0]?.image)
+  setMeta('property', 'og:image', home.seo.ogImage || `${location.origin}/og-image.png`)
   setMeta('name', 'apple-mobile-web-app-title', company.shortName)
-  document.head.querySelectorAll('link[rel="preload"][as="image"]').forEach((l) => l.remove()) // old static preload from index.html
-  if (home.slides[0]?.image) setLink('preload', home.slides[0].image, { as: 'image', fetchpriority: 'high' })
+  // drop a stale preload (a banner that has since been replaced), keep the one that is already downloading
+  document.head.querySelectorAll('link[rel="preload"][as="image"]').forEach((l) => l.getAttribute('href') !== home.slides[0]?.image && l.remove())
+  if (home.slides[0]?.image) {
+    if (!document.head.querySelector(`link[rel="preload"][as="image"][href="${home.slides[0].image}"]`)) setLink('preload', home.slides[0].image, { as: 'image', fetchpriority: 'high' })
+    try {
+      localStorage.setItem('damvolt:hero', home.slides[0].image) // index.html preloads it on the next visit
+    } catch {
+      /* storage blocked — fine */
+    }
+  }
   applyStructuredData()
 }
 

@@ -5,10 +5,19 @@ import Deco from './Deco'
 import { FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from './WhatsAppIcon'
 import { company, developer, legalPages, telLink } from '../data/site'
 
+// Only the networks whose link is filled in (admin → Site Settings → Social Links) are shown.
+const NETWORKS = [
+  ['facebook', 'Facebook', FacebookIcon],
+  ['instagram', 'Instagram', InstagramIcon],
+  ['linkedin', 'LinkedIn', LinkedinIcon],
+  ['youtube', 'YouTube', YoutubeIcon],
+]
+
 export default function Footer() {
   const year = new Date().getFullYear()
+  const socials = NETWORKS.filter(([key]) => /^https?:\/\//i.test((company.social?.[key] || '').trim()))
   return (
-    <footer className="footer">
+    <footer className="footer defer">
       <Deco type="tower" className="on-dark" style={{ width: 260, right: '4%', bottom: 40 }} />
       <div className="container footer-top">
         <div>
@@ -16,30 +25,24 @@ export default function Footer() {
             <Brand light />
           </div>
           <p>{company.description}</p>
-          <div className="socials">
-            <a href={company.social.facebook} aria-label="Facebook">
-              <FacebookIcon />
-            </a>
-            <a href={company.social.instagram} aria-label="Instagram">
-              <InstagramIcon />
-            </a>
-            <a href={company.social.linkedin} aria-label="LinkedIn">
-              <LinkedinIcon />
-            </a>
-            <a href={company.social.youtube} aria-label="YouTube">
-              <YoutubeIcon />
-            </a>
-          </div>
+          {socials.length > 0 && (
+            <div className="socials">
+              {socials.map(([key, label, Icon]) => (
+                <a href={company.social[key]} aria-label={label} key={key} target="_blank" rel="noopener noreferrer">
+                  <Icon />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>
-          <h4>Company</h4>
+          <h3>Company</h3>
           <ul className="flinks">
             {[
               ['/about', 'About Us'],
               ['/services', 'Services'],
               ['/industries', 'Industries'],
-              ['/careers', 'Careers'],
               ['/faq', 'FAQs'],
               ['/contact', 'Contact'],
             ].map(([to, label]) => (
@@ -51,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4>Legal Pages</h4>
+          <h3>Legal Pages</h3>
           <ul className="flinks">
             {legalPages.map((p) => (
               <li key={p.slug}>
@@ -62,7 +65,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4>Contact</h4>
+          <h3>Contact</h3>
           <div className="fcontact">
             {company.offices.map((o) => (
               <div key={o.label}>

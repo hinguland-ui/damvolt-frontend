@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Deco from '../components/Deco'
+import LazyMount from '../components/LazyMount'
 import ReviewMarquee from '../components/ReviewMarquee'
 import HeroSlider from '../components/HeroSlider'
 import Carousel from '../components/Carousel'
@@ -95,7 +96,7 @@ export default function Home() {
 
       {/* Stats */}
       {stats.length > 0 && (
-        <section className="section has-deco">
+        <section className="section has-deco defer">
           <Deco type="wave" style={{ width: 720, left: -80, bottom: 30 }} />
           <div className="container">
             <SectionHead eyebrow={statsHead.eyebrow} title={statsHead.title} />
@@ -106,7 +107,7 @@ export default function Home() {
 
       {/* Why us */}
       {whyUs.length > 0 && (
-        <section className="section alt has-deco">
+        <section className="section alt has-deco defer">
           <Deco type="tower" style={{ width: 300, right: 40, top: 30 }} />
           <div className="container">
             <SectionHead eyebrow={whyHead.eyebrow} title={whyHead.title} text={whyHead.text} />
@@ -129,7 +130,7 @@ export default function Home() {
 
       {/* Process */}
       {process.length > 0 && (
-        <section className="section has-deco">
+        <section className="section has-deco defer">
           <Deco type="bolt" style={{ width: 120, right: '8%', top: 60 }} />
           <div className="container">
             <SectionHead eyebrow={processHead.eyebrow} title={processHead.title} />
@@ -172,7 +173,7 @@ export default function Home() {
       )}
 
       {/* Testimonials */}
-      <section className="section reviews has-deco">
+      <section className="section reviews has-deco defer">
         <Deco type="rings" style={{ width: 420, left: -140, top: -60 }} />
         <div className="container">
           <div className="sec-head center reveal">
@@ -187,7 +188,9 @@ export default function Home() {
             <h2>{reviewsHead.title}</h2>
           </div>
         </div>
-        <ReviewMarquee />
+        <LazyMount minHeight={460}>
+          <ReviewMarquee />
+        </LazyMount>
       </section>
 
       <LocationSection alt />
