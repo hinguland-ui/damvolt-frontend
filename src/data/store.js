@@ -110,26 +110,44 @@ function applyHead() {
   applyStructuredData()
 }
 
-// schema.org Organization — lets Google show the company name, logo and contact details.
-function applyStructuredData() {
-  const office = company.offices?.[0]
-  const data = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: company.name,
-    url: location.origin,
-    logo: company.logo || undefined,
-    email: company.email || undefined,
-    telephone: company.phones?.[0] || undefined,
-    address: office?.address ? { '@type': 'PostalAddress', streetAddress: office.address, addressCountry: 'IN' } : undefined,
-    sameAs: Object.values(company.social || {}).filter((u) => /^https?:\/\//.test(u)),
-  }
-  let el = document.getElementById('ld-org')
+// JSON-LD helper: one <script id="…"> per block, replaced on every call (page-specific blocks are removed with removeJsonLd).
+export function setJsonLd(id, data) {
+  let el = document.getElementById(id)
   if (!el) {
     el = document.createElement('script')
     el.type = 'application/ld+json'
-    el.id = 'ld-org'
+    el.id = id
     document.head.appendChild(el)
   }
   el.textContent = JSON.stringify(data)
+}
+export const removeJsonLd = (id) => document.getElementById(id)?.remove()
+
+// schema.org Organization + WebSite — lets Google show the company name, logo, contact details and address.
+function applyStructuredData() {
+  const origin = location.origin
+  const offices = company.offices || []
+  const same = Object.values(company.social || {}).filter((u) => /^https?:\/\//.test(u))
+  setJsonLd('ld-org', {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': ['Organization', 'ProfessionalService'],
+        '@id': `${origin}/#org`,
+        name: company.name,
+        alternateName: company.shortName || undefined,
+        url: `${origin}/`,
+        logo: company.logo || undefined,
+        image: `${origin}/og-image.png`,
+        description: company.description || undefined,
+        email: company.email || undefined,
+        telephone: company.phones?.[0] || undefined,
+        openingHours: company.hours || undefined,
+        address: offices.map((o) => ({ '@type': 'PostalAddress', streetAddress: o.address, addressCountry: 'IN' })),
+        areaServed: ['Noida', 'Delhi NCR', 'India'],
+        sameAs: same.length ? same : undefined,
+      },
+      { '@type': 'WebSite', '@id': `${origin}/#website`, url: `${origin}/`, name: company.name, inLanguage: 'en-IN', publisher: { '@id': `${origin}/#org` } },
+    ],
+  })
 }

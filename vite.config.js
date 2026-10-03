@@ -21,7 +21,8 @@ const robots = (apiUrl) => ({
   name: 'robots-txt',
   apply: 'build',
   generateBundle() {
-    const sitemap = apiUrl && /^https?:\/\//.test(apiUrl) ? `${apiUrl.replace(/\/api\/?$/, '').replace(/\/$/, '')}/sitemap.xml` : ''
+    // Never advertise a localhost sitemap (a build made on a developer machine) — only a real https address.
+    const sitemap = apiUrl && /^https:\/\/(?!localhost|127\.)/.test(apiUrl) ? `${apiUrl.replace(/\/api\/?$/, '').replace(/\/$/, '')}/sitemap.xml` : ''
     this.emitFile({
       type: 'asset',
       fileName: 'robots.txt',

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, ChevronRight, Mail, Phone } from 'lucide-react'
 import Carousel from '../components/Carousel'
@@ -6,12 +7,44 @@ import { WhatsAppIcon } from '../components/WhatsAppIcon'
 import { CTABanner, PageHero, SectionHead, ServiceCard, usePageMeta } from '../components/ui'
 import { company, telLink } from '../data/site'
 import { getService, services } from '../data/services'
+import { removeJsonLd, setJsonLd } from '../data/store'
 
 export default function ServiceDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
   const s = getService(slug)
   usePageMeta(s?.title, s?.metaDescription || s?.short, undefined, s?.image, s?.metaTitle)
+
+  // Search-engine data for this service (Service + breadcrumb trail)
+  useEffect(() => {
+    if (!s) return
+    const url = `${location.origin}/services/${s.slug}`
+    setJsonLd('ld-page', {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Service',
+          name: s.title,
+          description: s.metaDescription || s.short,
+          image: s.image || undefined,
+          url,
+          serviceType: s.category || s.title,
+          areaServed: ['Noida', 'Delhi NCR', 'India'],
+          provider: { '@type': 'Organization', name: company.name, url: location.origin },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${location.origin}/` },
+            { '@type': 'ListItem', position: 2, name: 'Services', item: `${location.origin}/services` },
+            { '@type': 'ListItem', position: 3, name: s.title, item: url },
+          ],
+        },
+      ],
+    })
+    return () => removeJsonLd('ld-page')
+  }, [s])
+
   if (!s) return <Navigate to="/services" replace />
 
   const related = [...services.filter((x) => x.slug !== s.slug && x.category === s.category), ...services.filter((x) => x.category !== s.category)]
