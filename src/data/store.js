@@ -147,7 +147,25 @@ function applyStructuredData() {
         areaServed: ['Noida', 'Delhi NCR', 'India'],
         sameAs: same.length ? same : undefined,
       },
-      { '@type': 'WebSite', '@id': `${origin}/#website`, url: `${origin}/`, name: company.name, inLanguage: 'en-IN', publisher: { '@id': `${origin}/#org` } },
+      {
+        '@type': 'WebSite',
+        '@id': `${origin}/#website`,
+        url: `${origin}/`,
+        // Google's site name in search results: the short brand first, the full legal name as an alternative.
+        name: company.shortName || company.name,
+        alternateName: [...new Set([company.name, 'Damvolt Engineering'].filter((n) => n && n !== (company.shortName || company.name)))],
+        inLanguage: 'en-IN',
+        publisher: { '@id': `${origin}/#org` },
+      },
+      // The main pages, as a hint for the links Google lists under the company name.
+      ...[
+        ['About Us', '/about'],
+        ['Services', '/services'],
+        ['Industries', '/industries'],
+        ['FAQs', '/faq'],
+        ['Contact Us', '/contact'],
+        ...services.slice(0, 6).map((s) => [s.title, `/services/${s.slug}`]),
+      ].map(([name, path]) => ({ '@type': 'SiteNavigationElement', name, url: `${origin}${path}` })),
     ],
   })
 }
