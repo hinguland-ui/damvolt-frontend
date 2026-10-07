@@ -110,7 +110,7 @@ export default function Header({ onMenu }) {
                           ))}
                         </div>
                         <Link to="/contact" className="mega-promo" tabIndex={megaOpen ? 0 : -1}>
-                          <img src="/images/switchgear.webp" alt="" loading="lazy" decoding="async" />
+                          <img src="/images/7.jpeg" alt="" loading="lazy" decoding="async" />
                           <span className="mega-promo-body">
                             <strong>Planning a project?</strong>
                             <span>Free site visit &amp; quotation</span>
