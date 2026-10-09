@@ -40,10 +40,10 @@ export default function Footer() {
           <h3>Company</h3>
           <ul className="flinks">
             {[
+              ['/', 'Home'],
               ['/about', 'About Us'],
               ['/services', 'Services'],
-              ['/industries', 'Industries'],
-              ['/faq', 'FAQs'],
+              ['/careers', 'Careers'],
               ['/contact', 'Contact'],
             ].map(([to, label]) => (
               <li key={to}>
@@ -53,6 +53,7 @@ export default function Footer() {
           </ul>
         </div>
 
+        {legalPages.length > 0 && (
         <div>
           <h3>Legal Pages</h3>
           <ul className="flinks">
@@ -63,6 +64,7 @@ export default function Footer() {
             ))}
           </ul>
         </div>
+        )}
 
         <div>
           <h3>Contact</h3>

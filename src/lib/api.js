@@ -1,7 +1,11 @@
 import { hydrate } from '../data/store'
+import { staticContent } from '../data/content'
 
 // Single source of truth for the backend address: VITE_API_URL (see .env.example).
 export const API_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '')
+
+// Content is static (data/content.js) until the admin panel is ready: set VITE_USE_API=true in .env to load it from the API.
+export const USE_API = import.meta.env.VITE_USE_API === 'true'
 
 const CACHE_KEY = 'damvolt:content:v1'
 const listeners = new Set()
@@ -41,6 +45,16 @@ const fetchContent = () => {
  *  - First visit: waits for the single request.
  */
 export async function loadContent() {
+  if (!USE_API) {
+    // drop what an earlier API-driven version left in the browser (old content + old banner preload)
+    try {
+      localStorage.removeItem(CACHE_KEY)
+      localStorage.removeItem('damvolt:hero')
+    } catch {
+      /* storage blocked — fine */
+    }
+    return hydrate(staticContent)
+  }
   const cached = readCache()
   const request = fetchContent().then((data) => {
     try {

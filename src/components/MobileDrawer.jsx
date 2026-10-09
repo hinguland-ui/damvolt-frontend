@@ -10,8 +10,7 @@ const links = [
   { to: '/', label: 'Home', end: true },
   { to: '/about', label: 'About Us' },
   { services: true },
-  { to: '/industries', label: 'Industries' },
-  { to: '/faq', label: 'FAQs' },
+  { to: '/careers', label: 'Careers' },
   { to: '/contact', label: 'Contact' },
 ]
 

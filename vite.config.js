@@ -54,17 +54,16 @@ const aiFiles = (env) => ({
   generateBundle() {
     const base = siteUrl(env)
     const pages = [
-      ['Home', '/', 'Company overview, banner highlights, services and industries.'],
-      ['About Us', '/about', 'Who we are, our numbers and why customers choose us.'],
-      ['Services', '/services', 'Transformers, LT/HT panels, cables, testing, commissioning and PLC/VFD automation.'],
-      ['Industries', '/industries', 'Industries we serve: manufacturing, pharma, metal, solar, wind, warehouses and commercial buildings.'],
-      ['Contact', '/contact', 'Offices, phone numbers, email and the enquiry form.'],
-      ['FAQ', '/faq', 'Answers to common questions.'],
+      ['Home', '/', 'Company overview, services and sectors we work in.'],
+      ['About Us', '/about', 'Who we are and how we work.'],
+      ['Services', '/services', 'Panel, transformer and cable tray erection, instrument installation, meggering testing, switchgear, automation, power grid and building electrical work.'],
+      ['Careers', '/careers', 'Current work requirements.'],
+      ['Contact', '/contact', 'Office address, phone numbers, email and the enquiry form.'],
     ]
     const llms = [
-      '# Damvolt Engineering Services Private Limited',
+      '# Damvolt Engineering Service Private Limited',
       '',
-      '> Complete electrical and automation solutions — transformers, LT/HT panels, industrial cables, testing, commissioning and PLC/VFD automation. Offices in Noida and New Delhi, India.',
+      '> Electrical and instrumentation (E&I) contractor for cement, power, solar, steel and refinery plants — erection, testing, shutdown work and manpower supply. Office in Sikta, West Champaran, Bihar, India.',
       '',
       '## Pages',
       '',
@@ -73,7 +72,7 @@ const aiFiles = (env) => ({
     ].join('\n')
     const catalog = {
       specVersion: '1.0',
-      host: { displayName: 'Damvolt Engineering Services Private Limited', identifier: base || undefined },
+      host: { displayName: 'Damvolt Engineering Service Private Limited', identifier: base || undefined },
       entries: [
         {
           identifier: `${base}/llms.txt`,

@@ -16,6 +16,7 @@ export const industries = []
 export const reviews = []
 export const reviewRows = [[], []]
 export const legalPages = []
+export const careers = []
 export const pageSeo = {}
 
 const replace = (arr, next = []) => {
@@ -51,6 +52,7 @@ export function hydrate(d) {
   const half = Math.ceil(reviews.length / 2)
   replace(reviewRows, [reviews.slice(0, half), reviews.slice(half)])
   replace(legalPages, d.legal)
+  replace(careers, d.careers)
   assign(pageSeo, d.pageSeo)
 
   applyHead()
@@ -144,7 +146,7 @@ function applyStructuredData() {
         telephone: company.phones?.[0] || undefined,
         openingHours: company.hours || undefined,
         address: offices.map((o) => ({ '@type': 'PostalAddress', streetAddress: o.address, addressCountry: 'IN' })),
-        areaServed: ['Noida', 'Delhi NCR', 'India'],
+        areaServed: ['Bihar', 'India'],
         sameAs: same.length ? same : undefined,
       },
       {

@@ -29,7 +29,7 @@ export default function ServiceDetail() {
           image: s.image || undefined,
           url,
           serviceType: s.category || s.title,
-          areaServed: ['Noida', 'Delhi NCR', 'India'],
+          areaServed: ['Bihar', 'India'],
           provider: { '@type': 'Organization', name: company.name, url: location.origin },
         },
         {

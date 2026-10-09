@@ -7,7 +7,7 @@ import { Toaster, toast } from 'sonner'
 import { AlertCircle, Building2, CheckCircle2, Clock, Mail, MapPin, MessageSquareText, Phone, Send, User, Wrench } from 'lucide-react'
 import MapEmbed from '../components/MapEmbed'
 import Recaptcha from '../components/Recaptcha'
-import { API_URL } from '../lib/api'
+import { API_URL, USE_API } from '../lib/api'
 import { WhatsAppIcon } from '../components/WhatsAppIcon'
 import { PageHero, usePageMeta } from '../components/ui'
 import { company, telLink } from '../data/site'
@@ -88,7 +88,7 @@ function Field({ id, label, required, error, valid, icon: Ic, full, hint, childr
 }
 
 export default function Contact() {
-  usePageMeta('Contact Us', 'Contact Damvolt Engineering Services Private Limited — call, WhatsApp or email us for electrical and automation project enquiries.', 'contact')
+  usePageMeta('Contact Us', 'Contact Damvolt — call, WhatsApp or email us for electrical and automation project enquiries.', 'contact')
   const [params] = useSearchParams()
 
   const {
@@ -122,6 +122,14 @@ export default function Contact() {
         if (via === 'wa') {
           window.open(`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(buildText(data))}`, '_blank', 'noopener')
           toast.success('Your enquiry is ready', { description: 'Tap send in WhatsApp to deliver it to our team.' })
+          reset(empty)
+          return
+        }
+
+        // No backend yet: the enquiry opens in the visitor's e-mail app, addressed to the company.
+        if (!USE_API) {
+          location.href = `mailto:${company.email}?subject=${encodeURIComponent('Website enquiry')}&body=${encodeURIComponent(buildText(data))}`
+          toast.success('Your enquiry is ready', { description: 'Press send in your email app to deliver it to our team.' })
           reset(empty)
           return
         }
@@ -168,7 +176,7 @@ export default function Contact() {
       <PageHero
         title="Contact us"
         text="Have a project in mind or need urgent support? Our team is ready to help."
-        image="/images/hero-powerlines.webp"
+        image="/images/12.jpeg"
         crumbs={[{ label: 'Contact' }]}
       />
 

@@ -2,37 +2,24 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2, Eye, Gem, Target } from 'lucide-react'
 import Icon from '../components/Icon'
 import Img from '../components/Img'
-import StatsRow from '../components/StatsRow'
 import { CTABanner, PageHero, SectionHead, usePageMeta } from '../components/ui'
-import { process, stats, whyUs } from '../data/site'
+import { company, process, whyUs } from '../data/site'
 
 const values = [
-  {
-    icon: Target,
-    title: 'Our mission',
-    text: 'To deliver safe, efficient and reliable electrical and automation solutions that keep our clients’ operations running without interruption.',
-  },
-  {
-    icon: Eye,
-    title: 'Our vision',
-    text: 'To be one of India’s most trusted electrical engineering companies, known for quality workmanship, technical excellence and integrity.',
-  },
-  {
-    icon: Gem,
-    title: 'Our values',
-    text: 'Safety above everything, honesty in every quotation, quality in every connection and commitment to every deadline.',
-  },
+  { icon: Target, title: 'Our mission', text: 'To deliver safe, neat and on-time electrical and instrumentation work that keeps our clients’ plants running.' },
+  { icon: Eye, title: 'Our vision', text: 'To be a trusted E&I contractor for India’s industrial plants, known for quality workmanship and integrity.' },
+  { icon: Gem, title: 'Our values', text: 'Safety above everything, honesty in every quotation and commitment to every deadline.' },
 ]
 
 export default function About() {
-  usePageMeta('About Us', 'Learn about Damvolt Engineering Services Private Limited — a complete electrical and automation solutions company based in Noida & New Delhi.', 'about')
+  usePageMeta('About Us', 'Damvolt is an electrical and instrumentation contractor for cement, power, steel and refinery plants — erection, testing, shutdown work and manpower supply.', 'about')
 
   return (
     <>
       <PageHero
-        title="About Damvolt Engineering Services Private Limited"
-        text="A complete electrical solutions provider making industrial electrical systems efficient and safe."
-        image="/images/engineers-site.webp"
+        title="About Damvolt"
+        text="An electrical and instrumentation contractor for heavy industrial plants."
+        image="/images/13.jpeg"
         crumbs={[{ label: 'About' }]}
       />
 
@@ -41,17 +28,13 @@ export default function About() {
           <div className="reveal">
             <span className="eyebrow">Who we are</span>
             <h2>Engineering power. Delivering trust.</h2>
-            <p className="lead">
-              Damvolt Engineering Services Private Limited is headquartered in Noida, Uttar Pradesh, with its registered office in
-              New Delhi.
-            </p>
+            <p className="lead">Damvolt works on electrical and instrumentation (E&amp;I) projects in cement plants, power plants, steel plants, refineries and power grid projects.</p>
             <p>
-              We deal in electrical equipment, industrial automation, site testing and commissioning. From a single
-              distribution panel to complete plant electrification, our engineers manage the full lifecycle — load study,
-              design, supply of genuine equipment, installation, testing, commissioning and after-sales maintenance.
+              Our crew handles panel, transformer and cable tray erection, instrument installation, switchgear and switchboard work,
+              meggering tests, automation hook-up and shutdown jobs. We also supply skilled manpower to plants. Our office is at {company.offices[0]?.city}.
             </p>
             <ul className="check-list">
-              {['Experienced engineering team', 'Genuine OEM equipment', 'Turnkey project execution', 'Prompt after-sales service'].map((t) => (
+              {['Experienced site crew', 'Safety-first execution', 'Turnkey E&I project work', 'Quick response by call or WhatsApp'].map((t) => (
                 <li key={t}>
                   <CheckCircle2 size={20} strokeWidth={1.75} /> {t}
                 </li>
@@ -62,15 +45,7 @@ export default function About() {
             </Link>
           </div>
           <div className="img-stack reveal">
-            <Img className="split-img tall" src="/images/commissioning.webp" alt="Damvolt engineer at an electrical panel" />
-            <div className="img-badge">
-              <b>10+</b>
-              <span>
-                Years of
-                <br />
-                excellence
-              </span>
-            </div>
+            <Img className="split-img tall" src="/images/6.jpeg" alt="Plant where Damvolt carries out E&I work" />
           </div>
         </div>
       </section>
@@ -94,13 +69,7 @@ export default function About() {
 
       <section className="section">
         <div className="container">
-          <StatsRow stats={stats} />
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container">
-          <SectionHead eyebrow="Our strengths" title="Why clients choose Damvolt" text="Every project is backed by engineering discipline and a commitment to safety." />
+          <SectionHead eyebrow="Our strengths" title="Why clients choose Damvolt" text="Every project is backed by discipline and a commitment to safety." />
           <div className="feat-grid">
             {whyUs.map((w) => (
               <div className="feat reveal" key={w.title}>
@@ -117,7 +86,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section alt">
         <div className="container">
           <SectionHead eyebrow="Our approach" title="How we deliver" />
           <div className="process">
@@ -128,21 +97,6 @@ export default function About() {
                 <p>{p.text}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section alt">
-        <div className="container split">
-          <Img className="split-img reveal" src="/images/team-meeting.webp" alt="Damvolt team planning a project" />
-          <div className="reveal">
-            <span className="eyebrow">Our team</span>
-            <h2>Skilled people behind every connection.</h2>
-            <p>
-              Our team includes electrical engineers, PLC and automation programmers, panel builders, cable jointers,
-              testing engineers and site supervisors. Regular training keeps them current with the latest equipment and
-              safety practices.
-            </p>
           </div>
         </div>
       </section>

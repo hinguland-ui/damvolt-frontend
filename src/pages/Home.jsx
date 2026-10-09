@@ -12,6 +12,7 @@ import StatsRow from '../components/StatsRow'
 import { CTABanner, LocationSection, SectionHead, ServiceCard, usePageMeta } from '../components/ui'
 import { home, process, stats, whyUs } from '../data/site'
 import { industries, services } from '../data/services'
+import { reviews } from '../data/store'
 
 // Every piece of text, image and link on this page comes from the admin panel (Home Page tabs).
 export default function Home() {
@@ -173,6 +174,7 @@ export default function Home() {
       )}
 
       {/* Testimonials */}
+      {reviews.length > 0 && (
       <section className="section reviews has-deco defer">
         <Deco type="rings" style={{ width: 420, left: -140, top: -60 }} />
         <div className="container">
@@ -192,6 +194,7 @@ export default function Home() {
           <ReviewMarquee />
         </LazyMount>
       </section>
+      )}
 
       <LocationSection alt />
 

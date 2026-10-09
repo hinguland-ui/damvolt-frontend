@@ -3272,3 +3272,38 @@ textarea {
   content-visibility: auto;
   contain-intrinsic-size: auto 640px;
 }
+
+/* ---------- Services page: all services in one grid (4 per row on desktop, 3 tablet, 2 mobile) ---------- */
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+@media (max-width: 1024px) {
+  .svc-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+}
+@media (max-width: 640px) {
+  .svc-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .svc-grid .svc-body {
+    padding: 12px;
+  }
+  .svc-grid .svc-body h3 {
+    font-size: 15px;
+  }
+  .svc-grid .svc-body p {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .svc-grid .svc-meta {
+    display: none;
+  }
+}

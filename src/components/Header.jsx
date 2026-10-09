@@ -10,7 +10,7 @@ const links = [
   { to: '/', label: 'Home', end: true },
   { to: '/about', label: 'About' },
   { to: '/services', label: 'Services', mega: true },
-  { to: '/industries', label: 'Industries' },
+  { to: '/careers', label: 'Careers' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -62,7 +62,7 @@ export default function Header({ onMenu }) {
               <Clock size={14} /> {company.hours}
             </span>
             <span>
-              <MapPin size={14} /> Sector-7, Noida
+              <MapPin size={14} /> {company.offices[0]?.city}
             </span>
           </div>
         </div>

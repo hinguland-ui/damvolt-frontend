@@ -172,7 +172,7 @@ export function LocationSection({ alt = false }) {
   return (
     <section className={`section defer${alt ? ' alt' : ''}`}>
       <div className="container">
-        <SectionHead eyebrow="Visit us" title="Our offices" text="Meet our team in Noida or reach our registered office in New Delhi." />
+        <SectionHead eyebrow="Visit us" title="Our office" text="Visit us or call to discuss your requirement." />
         <div className="location">
           <div className="office-list">
             {company.offices.map((o) => (
