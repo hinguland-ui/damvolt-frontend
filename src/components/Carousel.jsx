@@ -8,10 +8,10 @@ import useEmblaStable from './useEmblaStable'
 // perView = [desktop, tablet, phone] cards visible.
 //  - more cards than fit on desktop: loops and auto-plays
 //  - everything already fits: a plain row — every card shown exactly once, no loop, no arrows
-export default function Carousel({ children, perView = [3, 2, 1.15], autoplay = true, label = 'Carousel' }) {
+export default function Carousel({ children, perView = [3, 2, 1.15], autoplay = true, loop = true, label = 'Carousel' }) {
   const [d, t, m] = perView
   const count = Children.count(children)
-  const loopable = count > d
+  const loopable = loop && count > d
 
   const [emblaRef, embla] = useEmblaCarousel(
     { loop: loopable, align: 'start', duration: 30, skipSnaps: false, containScroll: loopable ? false : 'trimSnaps' },
@@ -20,7 +20,7 @@ export default function Carousel({ children, perView = [3, 2, 1.15], autoplay = 
   useEmblaStable(embla)
 
   const [selected, setSelected] = useState(0)
-  const [scrollable, setScrollable] = useState(loopable)
+  const [scrollable, setScrollable] = useState(loop && count > d)
 
   const update = useCallback((api) => {
     setSelected(api.selectedScrollSnap())

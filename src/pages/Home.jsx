@@ -159,7 +159,7 @@ export default function Home() {
                 {industriesHead.link_label || 'All industries'} <ArrowRight size={16} />
               </Link>
             </div>
-            <Carousel perView={[4, 3, 1.6]} label="Industries">
+            <Carousel perView={[4, 3, 1.6]} loop={false} label="Industries">
               {industries.map((i) => (
                 <div className="ind-card" key={i.title}>
                   <Img src={i.image} alt={i.title} draggable="false" />

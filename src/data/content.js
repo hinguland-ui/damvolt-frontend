@@ -375,10 +375,10 @@ export const staticContent = {
     { title: 'Solar Plant', icon: 'Sun', image: img(16) },
     { title: 'Power Grid', icon: 'PlugZap', image: img(12) },
     { title: 'ECP', icon: 'Building2', image: img(2) },
-    { title: 'Supply Manpower', icon: 'Users', image: img(5) },
+    { title: 'Supply Manpower', icon: 'Users', image: img(3) },
     { title: 'Steel Plant', icon: 'Anvil', image: img(9) },
     { title: 'Refinery Plant', icon: 'FlaskConical', image: img(8) },
-    { title: 'Oil & Gas', icon: 'Fuel', image: img(3) },
+    { title: 'Oil & Gas', icon: 'Fuel', image: img(5) },
     { title: 'Shutdown Work', icon: 'Wrench', image: img(4) },
   ],
 
