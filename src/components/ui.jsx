@@ -178,10 +178,7 @@ export function LocationSection({ alt = false }) {
             {company.offices.map((o) => (
               <div className="office reveal" key={o.label}>
                 <span className="label">{o.label}</span>
-                <p>{o.address}</p>
-                <a href={o.mapLink} target="_blank" rel="noreferrer" className="link-arrow">
-                  Get directions <ArrowRight size={16} />
-                </a>
+                <p style={{ margin: 0 }}>{o.address}</p>
               </div>
             ))}
             <div className="office reveal">
