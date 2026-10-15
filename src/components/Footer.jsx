@@ -69,7 +69,7 @@ export default function Footer() {
         <div>
           <h3>Contact</h3>
           <div className="fcontact">
-            {company.offices.map((o) => (
+            {company.offices.filter((o) => !o.hideInFooter).map((o) => (
               <div key={o.label}>
                 <MapPin size={17} />
                 <span>
